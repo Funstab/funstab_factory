@@ -1,1 +1,2 @@
 txt<br># Visual Studio<br>.vs/<br>*.user<br>*.suo<br>bin/<br>obj/<br>.env
+.env
