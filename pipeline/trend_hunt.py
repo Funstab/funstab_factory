@@ -1,22 +1,49 @@
-﻿import requests, datetime, sqlite_utils, pathlib, random
+﻿# trend_hunt.py  –  v2  (Google Trends + Reddit /r/news)
+import datetime, random, sqlite_utils, requests, textwrap
+
 db = sqlite_utils.Database("storage/backlog.db")
+queue = db["queue"]
+queue.create({"topic": str,
+              "status": str,
+              "added": str},
+              pk="topic", ignore=True)
 
-def tiktok_tags():
-    url = ("https://business-api.tiktok.com/open_api/v1.2/"
-           "trend/hashtag/list/?country_code=US&date="
-           f"{datetime.date.today()}&interval=HOUR")
-    data = requests.get(url).json()
-    for h in data["data"]["hashtag_list"][:10]:
-        yield h["hashtag_name"].lstrip("#")
+# ---------- 1. Google daily hot searches ----------
+import feedparser, time
 
-topics = set(tiktok_tags())
-table = db["queue"]
-table.create({"topic": str, "status": str, "added": str}, pk="topic", alter=True)
+def google_hot():
+    """Return today’s top Google-Trends queries (RSS feed = no auth needed)."""
+    url = "https://trends.google.com/trends/trendingsearches/daily/rss?geo=US"
+    feed = feedparser.parse(url)
+    # Protect against empty feed / network error
+    if not feed.entries:
+        print("Google RSS empty; skipping")
+        return []
+    # Keep the first 20 titles
+    return [e.title for e in feed.entries[:20]]
 
-for word in random.sample(list(topics), 5):
+google_topics = google_hot()
+
+# ---------- 2. Reddit front-page news ----------
+reddit = requests.get(
+    "https://www.reddit.com/r/news/hot.json?limit=20",
+    headers={"User-Agent": "funstab-bot"}
+).json()
+reddit_topics = [p["data"]["title"].split(" - ")[0]
+                 for p in reddit["data"]["children"]]
+
+all_topics = set(google_topics) | set(reddit_topics)
+picked = random.sample(list(all_topics), 10)   # choose 10 to avoid spam
+
+added = 0
+for t in picked:
     try:
-        table.insert({"topic": word, "status": "NEW",
+        queue.insert({"topic": t.strip(),
+                      "status": "NEW",
                       "added": datetime.datetime.now().isoformat()})
+        added += 1
     except sqlite_utils.db.IntegrityError:
-        pass
-print("★ added", len(topics), "topics to the backlog")
+        pass    # already in backlog
+
+print(f"★ Added {added} fresh topics to backlog, total rows:",
+      queue.count)
