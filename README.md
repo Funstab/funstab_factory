@@ -26,7 +26,7 @@ All raw files auto-prune; finished clips land in **`storage/ready/`** ready for 
 ---
 
 ## Folder layout  📂
-
+```text
 C:\funstab_factory
  ├─ pipeline\              # Python modules (trend_hunt, asset_fetch…)
  ├─ storage\
@@ -35,6 +35,7 @@ C:\funstab_factory
  │   └─ ready\             # final MP4s
  ├─ .env                   # ← add your API keys here (never commit!)
  └─ LICENSE                # All Rights Reserved
+ ```
 
 ## Contributing 🤝
 
