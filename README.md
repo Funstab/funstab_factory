@@ -25,31 +25,31 @@ All raw files auto-prune; finished clips land in **`storage/ready/`** ready for 
 
 ---
 
-## Folder layout 🗂️
-
+## Folder layout  📂
+```text
 C:\funstab_factory
-├─ pipeline\ # Python modules (trend_hunt, asset_fetch…)
-├─ storage
-│ ├─ backlog.db # SQLite queue
-│ ├─ raw{topic}\ # temp clips + script.json + vo.mp3
-│ └─ ready\ # final MP4s
-├─ .env # ← add your API keys here (never commit!)
-└─ LICENSE # All Rights Reserved
+ ├─ pipeline\              # Python modules (trend_hunt, asset_fetch…)
+ ├─ storage\
+ │   ├─ backlog.db         # SQLite queue
+ │   ├─ raw\{topic}\       # temp clips + script.json + vo.mp3
+ │   └─ ready\             # final MP4s
+ ├─ .env                   # ← add your API keys here (never commit!)
+ └─ LICENSE                # All Rights Reserved
 
 
----
+### 2 / 2  Replace **Quick-start (Windows 11)** block
 
-## Quick-start (Windows 11) 💻
-
-powershell
+```md
+## Quick-start (Windows 11)  💻
+```powershell
 git clone https://github.com/YOURNAME/funstab_factory.git
 cd funstab_factory
 python -m venv venv
 .\venv\Scripts\activate
-pip install -r requirements.txt  # or run pip installs in README Day-by-Day guide
-copy .env.example .env           # then add your keys
+pip install -r requirements.txt     # or run pip installs from the Day-by-Day guide
+copy .env.example .env              # then add your keys
 python pipeline\trend_hunt.py
-python pipeline\queue_worker.py  # renders first MP4 into storage\ready
+python pipeline\queue_worker.py     # renders first MP4 into storage\ready
 
 Then wire cron_loop.bat into Task Scheduler → Create Basic Task → Daily → Repeat every 30 min.
 
