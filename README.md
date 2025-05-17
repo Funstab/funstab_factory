@@ -26,7 +26,7 @@ All raw files auto-prune; finished clips land in **`storage/ready/`** ready for 
 ---
 
 ## Folder layout  📂
-```text
+
 C:\funstab_factory
  ├─ pipeline\              # Python modules (trend_hunt, asset_fetch…)
  ├─ storage\
@@ -36,36 +36,8 @@ C:\funstab_factory
  ├─ .env                   # ← add your API keys here (never commit!)
  └─ LICENSE                # All Rights Reserved
 
+## Contributing 🤝
 
-### 2 / 2  Replace **Quick-start (Windows 11)** block
-
-```md
-## Quick-start (Windows 11)  💻
-```powershell
-git clone https://github.com/YOURNAME/funstab_factory.git
-cd funstab_factory
-python -m venv venv
-.\venv\Scripts\activate
-pip install -r requirements.txt     # or run pip installs from the Day-by-Day guide
-copy .env.example .env              # then add your keys
-python pipeline\trend_hunt.py
-python pipeline\queue_worker.py     # renders first MP4 into storage\ready
-
-Then wire cron_loop.bat into Task Scheduler → Create Basic Task → Daily → Repeat every 30 min.
-
-Environment Variables 🔑
-
-| Key                             | Purpose                       |
-| ------------------------------- | ----------------------------- |
-| `OPENAI_API_KEY`                | GPT-4o-mini for hooks + facts |
-| `ELEVENLABS_API_KEY`            | HQ voice-over                 |
-| `PEXELS_API_KEY`                | Free b-roll                   |
-| `TIKTOK_SESSIONID` *(optional)* | Auto-draft upload             |
-
-Keep them in .env locally; .gitignore stops accidental leaks.
-
-
-**Contributing** 🤝
 Pull requests welcome for bug fixes only; feature PRs require prior e-mail approval.
 Commercial forks / redistributions are strictly forbidden under the current license.
 
